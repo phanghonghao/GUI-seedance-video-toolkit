@@ -31,10 +31,10 @@ pip install -r requirements.txt
 
 首次运行需要配置两个 API 密钥（在 GUI 内操作即可）：
 
-| 提供商 | 用途 | 获取地址 |
+| 提供商 | 用途 | 注册/文档 |
 |--------|------|----------|
-| **并行科技** (Paratera) | 豆包生图/生视频 | https://llmapi.paratera.com |
-| **智谱 AI** (Zhipu) | LLM 场景规划 | https://open.bigmodel.cn |
+| **智谱 AI** (Zhipu) | LLM 场景规划 | 清华同学：[EasyCompute](https://easycompute.cs.tsinghua.edu.cn/home)（右上角 GLM 套餐） |
+| **并行科技** (Paratera) | 豆包生图/生视频 | [使用文档](https://ai.paratera.com/document/llm/support/lmsOffline) / [API 平台](https://llmapi.paratera.com) |
 
 运行程序后在 **API 配置** 页面填入密钥并测试连接。
 
