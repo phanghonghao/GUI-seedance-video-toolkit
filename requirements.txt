@@ -1,6 +1,19 @@
+# GUI dependencies
 PyQt6==6.6.1
 PyQt6-Qt6==6.6.1
 PyQt6-sip==13.6.0
 PyInstaller==6.3.0
 openai>=1.0.0
 requests>=2.28.0
+
+# jianying-editor dependencies
+uiautomation==2.0.20
+playwright==1.52.0
+pynput==1.7.7
+edge-tts==7.2.3
+pymediainfo==7.0.1
+opencv-python==4.11.0.86
+numpy==2.2.4
+imageio==2.37.0
+psutil==7.0.0
+websockets==16.0

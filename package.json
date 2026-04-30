@@ -1,0 +1,24 @@
+{
+  "name": "video-generator-full-cli",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Generic standalone CLI for document-driven presentation PDFs, media tasks, and Jianying automation handoff.",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "help": "python video-full.py --help",
+    "help:config": "python video-full.py config --help",
+    "help:init": "python video-full.py init --help",
+    "help:plan": "python video-full.py plan --help",
+    "help:slides": "python video-full.py slides --help",
+    "help:video": "python video-full.py video --help",
+    "help:jianying": "python video-full.py jianying --help",
+    "help:full": "python video-full.py full --help",
+    "check:files": "node scripts/check-config.mjs",
+    "check:config": "python video-full.py config",
+    "check:cli": "python video-full.py --help",
+    "check:all": "node scripts/check-config.mjs && python video-full.py config && python video-full.py --help"
+  }
+}

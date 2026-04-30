@@ -30,3 +30,4 @@ output/
 # Environment / secrets
 .env
 *.pfx
+.venv/

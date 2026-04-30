@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "claude_command": "C:\\Users\\20174\\AppData\\Roaming\\npm\\claude.cmd",
+  "version_arg": "--version",
+  "mode": "prompt-file",
+  "print_arg": "--print",
+  "workspace_root": "D:\\Desktop_Files\\video-generator-full-cli",
+  "env": {
+    "claude_command": "VIDEO_FULL_CLAUDE_COMMAND"
+  },
+  "prompt_handoff_template": "{claude_command} {print_arg} < \"{prompt_file}\"",
+  "notes": "Set enabled=true only after confirming the local Claude Code CLI command line interface."
+}

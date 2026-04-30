@@ -1,0 +1,29 @@
+{
+  "image": {
+    "provider": "openai-compatible",
+    "api_key": "sk-DP-l1lwxDR2DRh3upKxTbA",
+    "base_url": "https://llmapi.paratera.com/v1",
+    "model": "Doubao-Seedream-3.0-T2I",
+    "size": "1536x1024",
+    "env": {
+      "api_key": "VIDEO_FULL_IMAGE_API_KEY",
+      "base_url": "VIDEO_FULL_IMAGE_API_BASE",
+      "model": "VIDEO_FULL_IMAGE_MODEL"
+    }
+  },
+  "video": {
+    "provider": "generic-task-api",
+    "api_key": "sk-DP-l1lwxDR2DRh3upKxTbA",
+    "task_url": "https://llmapi.paratera.com/v1/p001/contents/generations/tasks",
+    "status_url": "https://llmapi.paratera.com/v1/p001/contents/generations/tasks",
+    "model": "Doubao-Seedance-1.0-Pro",
+    "poll_seconds": 10,
+    "max_polls": 60,
+    "env": {
+      "api_key": "VIDEO_FULL_VIDEO_API_KEY",
+      "task_url": "VIDEO_FULL_VIDEO_TASK_URL",
+      "status_url": "VIDEO_FULL_VIDEO_STATUS_URL",
+      "model": "VIDEO_FULL_VIDEO_MODEL"
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "project": {
+    "name": "",
+    "slug": "",
+    "author": "",
+    "organization": ""
+  },
+  "sources": {
+    "root": "",
+    "documents": [],
+    "images": []
+  },
+  "slides": {
+    "title": "",
+    "subtitle": "",
+    "author": "",
+    "organization": "",
+    "theme": {
+      "primary_color": "#1F4E79",
+      "accent_color": "#D9E7F5"
+    },
+    "compile": {
+      "engine": "xelatex",
+      "runs": 2
+    },
+    "sections": []
+  },
+  "media": {
+    "dry_run": true,
+    "scenes": []
+  },
+  "jianying": {
+    "voice": "neutral-female",
+    "subtitles": true,
+    "transition": "fade",
+    "music": "calm-instrumental",
+    "draft_path": "",
+    "automation_command": ""
+  },
+  "outputs": {
+    "root": "",
+    "job_dir": "",
+    "slides_dir": "",
+    "media_dir": "",
+    "jianying_dir": "",
+    "logs_dir": ""
+  }
+}

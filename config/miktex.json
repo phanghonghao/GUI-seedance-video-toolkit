@@ -1,0 +1,17 @@
+{
+  "xelatex_command": "C:\\MiKTeX\\miktex\\bin\\x64\\xelatex.exe",
+  "version_arg": "--version",
+  "compile_flags": [
+    "-interaction=nonstopmode",
+    "-halt-on-error"
+  ],
+  "runs": 2,
+  "output_pdf_name": "main.pdf",
+  "distribution": "MiKTeX",
+  "minimum_major_version": 0,
+  "install_root": "C:\\MiKTeX\\miktex\\bin\\x64",
+  "env": {
+    "xelatex_command": "VIDEO_FULL_XELATEX_COMMAND"
+  },
+  "notes": "Change xelatex_command if MiKTeX is installed outside PATH."
+}
