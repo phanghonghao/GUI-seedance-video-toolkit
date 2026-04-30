@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import importlib.util
+import io
 import os
 import sys
 from pathlib import Path
@@ -57,6 +58,18 @@ def _resolve_jy_wrapper():
     return mod.JyProject
 
 
+def _fix_stdout_encoding() -> None:
+    """Reconfigure stdout/stderr to utf-8 on Windows to avoid gbk emoji errors."""
+    if sys.platform != "win32":
+        return
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            try:
+                stream.reconfigure(encoding="utf-8", errors="replace")
+            except Exception:
+                pass
+
+
 def build_jianying_draft(
     project_name: str,
     draft_path: str,
@@ -86,6 +99,9 @@ def build_jianying_draft(
         JyProject = _resolve_jy_wrapper()
     except FileNotFoundError as exc:
         return {"status": "error", "message": str(exc)}
+
+    # Ensure stdout can handle emoji / CJK chars (Windows gbk default)
+    _fix_stdout_encoding()
 
     resolution = config.get("resolution", "1080P")
     width, height = {"1080P": (1920, 1080), "4K": (3840, 2160)}.get(resolution, (1920, 1080))
