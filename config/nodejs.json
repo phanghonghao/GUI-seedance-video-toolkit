@@ -1,14 +1,10 @@
 {
-  "node_command": "D:\\nodejs\\node.exe",
-  "npm_command": "D:\\nodejs\\npm.cmd",
-  "npx_command": "D:\\nodejs\\npx.cmd",
+  "node_command": "node",
+  "npm_command": "npm",
+  "npx_command": "npx",
   "node_version_arg": "--version",
   "npm_version_arg": "--version",
   "npx_version_arg": "--version",
   "minimum_version": "18",
-  "package_manager": "npm",
-  "install_root": "D:\\nodejs",
-  "scripts_enabled": true,
-  "env": {},
-  "notes": "Used for package.json scripts and local validation helpers."
+  "package_manager": "npm"
 }

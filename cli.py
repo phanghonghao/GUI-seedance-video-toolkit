@@ -12,6 +12,7 @@ from commands.full import FullCommand
 from commands.init import InitCommand
 from commands.jianying import JianyingCommand
 from commands.plan import PlanCommand
+from commands.setup import SetupCommand
 from commands.slides import SlidesCommand
 from commands.video import VideoCommand
 from commands.config import ConfigCommand
@@ -41,6 +42,7 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers = parser.add_subparsers(dest="command", metavar="COMMAND")
     commands = [
         ConfigCommand(),
+        SetupCommand(),
         InitCommand(),
         PlanCommand(),
         SlidesCommand(),

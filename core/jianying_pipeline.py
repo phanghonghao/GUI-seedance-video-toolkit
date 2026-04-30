@@ -1,11 +1,10 @@
 from __future__ import annotations
 
 import json
-import subprocess
 from pathlib import Path
 
 from .app_context import AppContext
-from .config_loader import env_or_value
+from .jianying_automation import build_jianying_draft
 from .job import JobContext
 from .utils import ensure_directory, read_json
 
@@ -68,51 +67,26 @@ def run_jianying_pipeline(app: AppContext, job: JobContext, dry_run: bool = Fals
     project_file = jianying_dir / "jianying_project.json"
     project_file.write_text(json.dumps(project_file_payload, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    prompt_file = jianying_dir / "jianying_prompt.md"
-    prompt_file.write_text(_build_prompt(job, timeline_items, config), encoding="utf-8")
-
     automation_status = "skipped"
-    if not dry_run and config.get("automation_command"):
-        automation_status = _run_automation(config["automation_command"], prompt_file)
+    draft_dir = ""
+    if not dry_run and config.get("draft_path"):
+        result = build_jianying_draft(
+            project_name=job.data["project"]["name"],
+            draft_path=config["draft_path"],
+            timeline_items=timeline_items,
+            config=config,
+        )
+        automation_status = result["status"]
+        draft_dir = result.get("draft_dir", "")
+        if result["status"] == "error":
+            automation_status = f"error: {result['message']}"
 
     return {
-        "prompt_file": str(prompt_file.resolve()),
         "project_file": str(project_file.resolve()),
         "asset_manifest_file": str(asset_manifest_file.resolve()),
         "automation_status": automation_status,
+        "draft_dir": draft_dir,
     }
-
-
-def _build_prompt(job: JobContext, timeline_items: list[dict], config: dict) -> str:
-    lines = [
-        "# Jianying automation handoff",
-        "",
-        f"- Project: {job.data['project']['name']}",
-        f"- Draft path: {config['draft_path'] or '<configure draft_path in config/jianying.json>'}",
-        f"- Resolution: {config['resolution']}",
-        f"- FPS: {config['fps']}",
-        f"- Voice: {config['voice']}",
-        f"- Transition: {config['transition']}",
-        f"- Music: {config['music']}",
-        "",
-        "## Timeline items",
-        "",
-    ]
-    for item in timeline_items:
-        lines.append(
-            f"- {item['scene_id']}: {item['title']} | status={item['status']} | media={item['media_path']}"
-        )
-    lines.extend(
-        [
-            "",
-            "## Notes",
-            "",
-            "- Import every ready media item in the listed order.",
-            "- Keep pending items as placeholders until media rendering is complete.",
-            "- Add subtitles, AI voice-over, transitions, and background music based on the project file.",
-        ]
-    )
-    return "\n".join(lines) + "\n"
 
 
 def _load_jianying_config(app: AppContext) -> dict:
@@ -126,35 +100,8 @@ def _load_jianying_config(app: AppContext) -> dict:
             "voice": "neutral-female",
             "transition": "fade",
             "music": "calm-instrumental",
+            "subtitles": True,
         }
         config_file.write_text(json.dumps(default_payload, ensure_ascii=False, indent=2), encoding="utf-8")
         return default_payload
-    config = read_json(config_file)
-    claude_config = app.load_config(
-        "claude-code.json",
-        default={
-            "enabled": False,
-            "claude_command": "claude",
-            "print_arg": "--print",
-            "prompt_handoff_template": "{claude_command} {print_arg} < \"{prompt_file}\"",
-        },
-    )
-    if not config.get("automation_command") and claude_config.get("enabled"):
-        claude_command = env_or_value("VIDEO_FULL_CLAUDE_COMMAND", claude_config.get("claude_command", "claude"))
-        config["automation_command"] = claude_config.get(
-            "prompt_handoff_template",
-            "{claude_command} {print_arg} < \"{prompt_file}\"",
-        ).format(
-            claude_command=claude_command,
-            print_arg=claude_config.get("print_arg", "--print"),
-            prompt_file="{prompt_file}",
-        )
-    return config
-
-
-def _run_automation(command_template: str, prompt_file: Path) -> str:
-    command = command_template.replace("{prompt_file}", str(prompt_file.resolve()))
-    proc = subprocess.run(command, shell=True, capture_output=True, text=True, encoding="utf-8", errors="ignore")
-    if proc.returncode == 0:
-        return "executed"
-    return f"failed: {proc.stderr.strip() or proc.stdout.strip() or proc.returncode}"
+    return read_json(config_file)

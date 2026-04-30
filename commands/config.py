@@ -39,7 +39,7 @@ class ConfigCommand:
         results.extend(_check_json_files(app))
         results.extend(_check_miktex(app))
         results.extend(_check_nodejs(app))
-        results.extend(_check_claude_code(app))
+        results.extend(_check_jianying_editor(app))
         results.extend(_check_providers(app))
         results.extend(_check_jianying(app))
 
@@ -65,7 +65,6 @@ def _check_json_files(app: AppContext) -> list[CheckResult]:
     required = [
         "miktex.json",
         "nodejs.json",
-        "claude-code.json",
         "providers.json",
         "jianying.json",
         "project-defaults.json",
@@ -155,27 +154,20 @@ def _check_nodejs(app: AppContext) -> list[CheckResult]:
     return results
 
 
-def _check_claude_code(app: AppContext) -> list[CheckResult]:
-    config = app.load_config(
-        "claude-code.json",
-        default={
-            "enabled": False,
-            "claude_command": "claude",
-            "version_arg": "--version",
-        },
-    )
-    enabled = bool(config.get("enabled"))
-    command = str(env_or_value("VIDEO_FULL_CLAUDE_COMMAND", config.get("claude_command", "claude"))).strip()
-    results = _check_command(
-        area="claude-code",
-        command=command,
-        version_arg=str(config.get("version_arg", "--version")).strip() or "--version",
-        minimum_major=0,
-        optional=not enabled,
-        success_prefix="Claude Code command ready",
-    )
-    if not enabled:
-        results.append(CheckResult("WARN", "claude-code", "Automation is disabled in config/claude-code.json"))
+def _check_jianying_editor(app: AppContext) -> list[CheckResult]:
+    scripts_dir = app.root / "libs" / "jianying-editor" / "scripts"
+    wrapper = scripts_dir / "jy_wrapper.py"
+    results = []
+    if wrapper.is_file():
+        results.append(CheckResult("OK", "jianying-editor", f"Submodule ready: {scripts_dir}"))
+    else:
+        results.append(
+            CheckResult(
+                "WARN",
+                "jianying-editor",
+                "libs/jianying-editor submodule not found. Run: git submodule update --init --recursive",
+            )
+        )
     return results
 
 
@@ -223,12 +215,6 @@ def _check_jianying(app: AppContext) -> list[CheckResult]:
             results.append(CheckResult("WARN", "jianying", f"Draft path does not exist yet: {draft_dir}"))
     else:
         results.append(CheckResult("WARN", "jianying", "draft_path is empty in config/jianying.json"))
-
-    automation_command = str(config.get("automation_command", "")).strip()
-    if automation_command:
-        results.append(CheckResult("OK", "jianying", "automation_command is configured"))
-    else:
-        results.append(CheckResult("WARN", "jianying", "automation_command is empty; jianying will generate handoff files only"))
 
     results.append(
         CheckResult(

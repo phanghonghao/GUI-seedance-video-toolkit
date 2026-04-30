@@ -44,10 +44,6 @@ class AppContext:
         return self.config_dir / "nodejs.json"
 
     @property
-    def claude_code_config_file(self) -> Path:
-        return self.config_dir / "claude-code.json"
-
-    @property
     def providers_config_file(self) -> Path:
         return self.config_dir / "providers.json"
 

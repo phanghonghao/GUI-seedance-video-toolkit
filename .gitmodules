@@ -1,0 +1,3 @@
+[submodule "libs/jianying-editor"]
+	path = libs/jianying-editor
+	url = https://github.com/luoluoluo22/jianying-editor-skill.git
